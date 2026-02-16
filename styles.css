@@ -8,3 +8,8 @@
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
+
+.card:hover {
+  transform: translateY(-4px);
+  transition: transform 0.3s ease;
+}

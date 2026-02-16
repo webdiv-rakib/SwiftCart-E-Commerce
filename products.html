@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Products - SwiftCart</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="min-h-screen bg-base-200 antialiased">
+
+  <div class="navbar bg-base-100 shadow fixed top-0 z-50 px-4 lg:px-8">
+    <div class="navbar-start">
+      <a href="index.html" class="text-2xl font-bold text-primary">SwiftCart</a>
+    </div>
+    <div class="navbar-center hidden lg:flex">
+      <ul class="menu menu-horizontal px-1 gap-2">
+        <li><a href="index.html" class="text-base">Home</a></li>
+        <li><a href="products.html" class="text-base">Products</a></li>
+        <li><a href="#" class="text-base">About</a></li>
+        <li><a href="#" class="text-base">Contact</a></li>
+      </ul>
+    </div>
+    <div class="navbar-end">
+      <button class="btn btn-ghost btn-circle relative">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+        </svg>
+        <span id="cart-count" class="badge badge-sm badge-secondary absolute -top-1 -right-1">0</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="h-20"></div>
+
+  <section class="py-16 px-4 md:px-8">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-10">
+        <h2 class="text-4xl md:text-5xl font-bold text-primary mb-4">All Products</h2>
+        <p class="text-xl text-base-content/70">Browse our full collection</p>
+      </div>
+
+      <div class="flex flex-wrap justify-center gap-4 mb-12" id="category-buttons">
+        <button class="btn btn-outline btn-primary category-btn active" data-category="all">All</button>
+      </div>
+
+      <div id="loading" class="flex justify-center items-center min-h-[400px] hidden">
+        <span class="loading loading-spinner loading-lg text-primary"></span>
+      </div>
+
+      <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
+    </div>
+  </section>
+
+  <dialog id="product-modal" class="modal modal-bottom sm:modal-middle">
+    <div class="modal-box max-w-4xl">
+      <form method="dialog">
+        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+      </form>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <figure>
+          <img id="modal-image" src="" alt="Product" class="w-full h-96 object-contain rounded-xl bg-white p-4 shadow" />
+        </figure>
+        <div class="flex flex-col justify-between">
+          <div>
+            <h3 id="modal-title" class="text-3xl font-bold mb-4"></h3>
+            <p id="modal-category" class="badge badge-lg badge-outline mb-4"></p>
+            <p id="modal-description" class="text-base-content/80 mb-6 leading-relaxed"></p>
+          </div>
+          <div>
+            <div class="flex items-center justify-between mb-6">
+              <div class="text-4xl font-bold text-primary" id="modal-price"></div>
+              <div class="flex items-center gap-2">
+                <div id="modal-rating-stars" class="rating rating-lg"></div>
+                <span id="modal-rating-text" class="text-xl"></span>
+              </div>
+            </div>
+            <button class="btn btn-primary btn-lg w-full gap-2" id="modal-add-cart">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <form method="dialog" class="modal-backdrop"><button>close</button></form>
+  </dialog>
+
+  <script src="script.js"></script>
+  <script>
+    let allProducts = [];
+
+    async function loadCategories() {
+      const container = document.getElementById('category-buttons');
+      try {
+        const res = await fetch('https://fakestoreapi.com/products/categories');
+        const cats = await res.json();
+        cats.forEach(cat => {
+          const btn = document.createElement('button');
+          btn.className = 'btn btn-outline btn-primary category-btn';
+          btn.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
+          btn.dataset.category = cat;
+          container.appendChild(btn);
+        });
+
+        document.querySelectorAll('.category-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const cat = btn.dataset.category;
+            loadProducts(cat === 'all' ? '' : `/category/${cat}`);
+          });
+        });
+
+        document.querySelector('[data-category="all"]').classList.add('active');
+        loadProducts('');
+      } catch (e) {
+        console.error('Categories failed', e);
+      }
+    }
+
+    async function loadProducts(endpoint = '') {
+      const grid = document.getElementById('products-grid');
+      const loading = document.getElementById('loading');
+      if (!grid || !loading) return;
+
+      grid.innerHTML = '';
+      loading.classList.remove('hidden');
+
+      try {
+        const url = `https://fakestoreapi.com/products${endpoint}`;
+        const res = await fetch(url);
+        const products = await res.json();
+
+        if (endpoint === '') allProducts = products;
+
+        products.forEach(p => grid.appendChild(createProductCard(p)));
+      } catch (e) {
+        grid.innerHTML = '<p class="col-span-full text-center py-10 text-error">Failed to load products</p>';
+      } finally {
+        loading.classList.add('hidden');
+      }
+    }
+
+    function createProductCard(product) {
+      const card = document.createElement('div');
+      card.className = 'card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow';
+      const title = product.title.length > 55 ? product.title.slice(0,52)+'...' : product.title;
+      const stars = Array(5).fill(0).map((_,i) => 
+        i < Math.round(product.rating.rate) ? 'text-warning' : 'text-base-content/30'
+      ).map(cls => `<span class="${cls}">★</span>`).join('');
+
+      card.innerHTML = `
+        <figure class="px-6 pt-6">
+          <img src="${product.image}" alt="${product.title}" class="rounded-xl h-48 w-full object-contain bg-white p-4" />
+        </figure>
+        <div class="card-body p-5">
+          <h2 class="card-title text-lg line-clamp-2">${title}</h2>
+          <div class="flex justify-between items-center mt-2">
+            <div class="badge badge-outline badge-secondary">${product.category}</div>
+            <div class="text-xl font-bold text-primary">$${product.price.toFixed(2)}</div>
+          </div>
+          <div class="flex items-center gap-1 mt-2">
+            <div class="rating rating-sm">${stars}</div>
+            <span class="text-sm text-base-content/70">(${product.rating.rate})</span>
+          </div>
+          <div class="card-actions justify-between mt-4">
+            <button class="btn btn-sm btn-outline btn-info details-btn" data-id="${product.id}">Details</button>
+            <button class="btn btn-sm btn-primary add-to-cart-btn" data-id="${product.id}">Add to Cart</button>
+          </div>
+        </div>
+      `;
+      return card;
+    }
+
+    async function showProductDetails(id) {
+      try {
+        const res = await fetch(`https://fakestoreapi.com/products/${id}`);
+        const p = await res.json();
+
+        document.getElementById('modal-image').src = p.image;
+        document.getElementById('modal-title').textContent = p.title;
+        document.getElementById('modal-category').textContent = p.category.toUpperCase();
+        document.getElementById('modal-description').textContent = p.description;
+        document.getElementById('modal-price').textContent = `$${p.price.toFixed(2)}`;
+
+        const starsContainer = document.getElementById('modal-rating-stars');
+        starsContainer.innerHTML = '';
+        for (let i = 1; i <= 5; i++) {
+          const star = document.createElement('input');
+          star.type = 'radio';
+          star.name = 'rating';
+          star.className = 'mask mask-star-2 bg-warning';
+          if (i <= Math.round(p.rating.rate)) star.checked = true;
+          starsContainer.appendChild(star);
+        }
+        document.getElementById('modal-rating-text').textContent = `(${p.rating.rate} / ${p.rating.count})`;
+
+        document.getElementById('product-modal').showModal();
+      } catch (e) {
+        alert('Failed to load product details');
+      }
+    }
+
+    document.addEventListener('click', e => {
+      const btn = e.target.closest('.details-btn');
+      if (btn) {
+        const id = btn.dataset.id;
+        showProductDetails(id);
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadCategories();
+    });
+  </script>
+
+</body>
+</html>
