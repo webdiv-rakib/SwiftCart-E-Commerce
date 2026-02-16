@@ -8,31 +8,69 @@
   <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
   <link rel="stylesheet" href="styles.css">
 </head>
-<body class="min-h-screen bg-base-200 antialiased">
 
-  <div class="navbar bg-base-100 shadow fixed top-0 z-50 px-4 lg:px-8">
-    <div class="navbar-start">
-      <a href="index.html" class="text-2xl font-bold text-primary">SwiftCart</a>
+<dialog id="cart-modal" class="modal">
+  <div class="modal-box max-w-3xl">
+    <h3 class="font-bold text-2xl mb-6">Your Shopping Cart</h3>
+
+    <div id="cart-items" class="space-y-6 mb-8 max-h-[60vh] overflow-y-auto pr-2"></div>
+
+    <div class="flex justify-between items-center text-xl font-bold mb-6 border-t pt-4">
+      <span>Total:</span>
+      <span id="cart-total">$0.00</span>
     </div>
-    <div class="navbar-center hidden lg:flex">
-      <ul class="menu menu-horizontal px-1 gap-2">
-        <li><a href="index.html" class="text-base">Home</a></li>
-        <li><a href="products.html" class="text-base">Products</a></li>
-        <li><a href="#" class="text-base">About</a></li>
-        <li><a href="#" class="text-base">Contact</a></li>
-      </ul>
-    </div>
-    <div class="navbar-end">
-      <button class="btn btn-ghost btn-circle relative">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-        </svg>
-        <span id="cart-count" class="badge badge-sm badge-secondary absolute -top-1 -right-1">0</span>
-      </button>
+
+    <div class="modal-action flex justify-between w-full">
+      <button onclick="clearCart()" class="btn btn-error">Clear Cart</button>
+      <div>
+        <button class="btn btn-neutral mr-2" onclick="document.getElementById('cart-modal').close()">Close</button>
+        <button class="btn btn-primary">Proceed to Checkout</button>
+      </div>
     </div>
   </div>
+  <form method="dialog" class="modal-backdrop"><button>close</button></form>
+</dialog>
 
-  <div class="hero min-h-screen" style="background-image: url('https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?auto=format&fit=crop&q=80&w=2070');">
+<body class="min-h-screen bg-base-200 antialiased">
+
+<div class="navbar bg-base-100 shadow fixed top-0 z-50 px-4 lg:px-8">
+  <div class="navbar-start">
+    <div class="dropdown lg:hidden">
+      <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </div>
+      <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="products.html">Products</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <a href="index.html" class="text-2xl font-bold text-primary">SwiftCart</a>
+  </div>
+
+  <div class="navbar-center hidden lg:flex">
+    <ul class="menu menu-horizontal px-1 gap-2">
+      <li><a href="index.html" class="text-base">Home</a></li>
+      <li><a href="products.html" class="text-base">Products</a></li>
+      <li><a href="#" class="text-base">About</a></li>
+      <li><a href="#" class="text-base">Contact</a></li>
+    </ul>
+  </div>
+
+  <div class="navbar-end">
+    <button onclick="showCart()" class="btn btn-ghost btn-circle relative">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+      </svg>
+      <span id="cart-count" class="badge badge-sm badge-secondary absolute -top-1 -right-1">0</span>
+    </button>
+  </div>
+</div>
+
+  <div class="hero min-h-screen" style="background-image: url(/4810807.jpg);">
     <div class="hero-overlay bg-opacity-65"></div>
     <div class="hero-content text-center text-base-100">
       <div class="max-w-2xl">
@@ -131,64 +169,81 @@
   </footer>
 
   <script src="script.js"></script>
-  <script>
-    async function loadTrendingProducts() {
-      const grid = document.getElementById('trending-grid');
-      const loading = document.getElementById('trending-loading');
-      if (!grid || !loading) return;
+<script src="script.js"></script>
 
-      grid.innerHTML = '';
-      loading.classList.remove('hidden');
+<script src="script.js"></script>
+<script>
+  async function loadTrendingProducts() {
+    const grid = document.getElementById('trending-grid');
+    const loading = document.getElementById('trending-loading');
+    if (!grid || !loading) return;
 
-      try {
-        const res = await fetch('https://fakestoreapi.com/products');
-        const products = await res.json();
-        products.sort((a, b) => b.rating.rate - a.rating.rate);
-        const top = products.slice(0, 3);
+    grid.innerHTML = '';
+    loading.classList.remove('hidden');
 
-        top.forEach(p => grid.appendChild(createProductCard(p)));
-      } catch (e) {
-        grid.innerHTML = '<p class="text-center py-10 text-error">Failed to load trending products</p>';
-      } finally {
-        loading.classList.add('hidden');
-      }
+    try {
+      const res = await fetch('https://fakestoreapi.com/products');
+      const products = await res.json();
+      products.sort((a, b) => b.rating.rate - a.rating.rate);
+      const top = products.slice(0, 3);
+
+      top.forEach(p => grid.appendChild(createProductCard(p)));
+    } catch (e) {
+      grid.innerHTML = '<p class="text-center py-10 text-error">Failed to load trending products</p>';
+    } finally {
+      loading.classList.add('hidden');
     }
+  }
 
-    function createProductCard(product) {
-      const card = document.createElement('div');
-      card.className = 'card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow';
-      const title = product.title.length > 55 ? product.title.slice(0,52)+'...' : product.title;
-      const stars = Array(5).fill(0).map((_,i) => 
-        i < Math.round(product.rating.rate) ? 'text-warning' : 'text-base-content/30'
-      ).map(cls => `<span class="${cls}">★</span>`).join('');
+  function createProductCard(product) {
+    const card = document.createElement('div');
+    card.className = 'card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow';
+    const title = product.title.length > 55 ? product.title.slice(0,52)+'...' : product.title;
+    const stars = Array(5).fill(0).map((_,i) => 
+      i < Math.round(product.rating.rate) ? 'text-warning' : 'text-base-content/30'
+    ).map(cls => `<span class="${cls}">★</span>`).join('');
 
-      card.innerHTML = `
-        <figure class="px-6 pt-6">
-          <img src="${product.image}" alt="${product.title}" class="rounded-xl h-48 w-full object-contain bg-white p-4" />
-        </figure>
-        <div class="card-body p-5">
-          <h2 class="card-title text-lg line-clamp-2">${title}</h2>
-          <div class="flex justify-between items-center mt-2">
-            <div class="badge badge-outline badge-secondary">${product.category}</div>
-            <div class="text-xl font-bold text-primary">$${product.price.toFixed(2)}</div>
-          </div>
-          <div class="flex items-center gap-1 mt-2">
-            <div class="rating rating-sm">${stars}</div>
-            <span class="text-sm text-base-content/70">(${product.rating.rate})</span>
-          </div>
-          <div class="card-actions justify-between mt-4">
-            <button class="btn btn-sm btn-outline btn-info details-btn" data-id="${product.id}">Details</button>
-            <button class="btn btn-sm btn-primary add-to-cart-btn" data-id="${product.id}">Add to Cart</button>
-          </div>
+    card.innerHTML = `
+      <figure class="px-6 pt-6">
+        <img src="${product.image}" alt="${product.title}" class="rounded-xl h-48 w-full object-contain bg-white p-4" />
+      </figure>
+      <div class="card-body p-5">
+        <h2 class="card-title text-lg line-clamp-2">${title}</h2>
+        <div class="flex justify-between items-center mt-2">
+          <div class="badge badge-outline badge-secondary">${product.category}</div>
+          <div class="text-xl font-bold text-primary">$${product.price.toFixed(2)}</div>
         </div>
-      `;
-      return card;
+        <div class="flex items-center gap-1 mt-2">
+          <div class="rating rating-sm">${stars}</div>
+          <span class="text-sm text-base-content/70">(${product.rating.rate})</span>
+        </div>
+        <div class="card-actions justify-between mt-4">
+          <button class="btn btn-sm btn-outline btn-info details-btn" data-id="${product.id}">Details</button>
+          <button class="btn btn-sm btn-primary add-to-cart-btn" data-id="${product.id}">Add to Cart</button>
+        </div>
+      </div>
+    `;
+    return card;
+  }
+
+  document.addEventListener('click', e => {
+    const target = e.target.closest('button');
+
+    if (!target) return;
+
+    if (target.classList.contains('add-to-cart-btn')) {
+      const id = parseInt(target.dataset.id);
+      window.addToCart(id);
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      loadTrendingProducts();
-    });
-  </script>
+    if (target.classList.contains('details-btn')) {
+    }
+  });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    loadTrendingProducts();
+  });
+</script>
 
 </body>
 </html>

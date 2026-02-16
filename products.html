@@ -8,29 +8,67 @@
   <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
   <link rel="stylesheet" href="styles.css">
 </head>
-<body class="min-h-screen bg-base-200 antialiased">
 
-  <div class="navbar bg-base-100 shadow fixed top-0 z-50 px-4 lg:px-8">
-    <div class="navbar-start">
-      <a href="index.html" class="text-2xl font-bold text-primary">SwiftCart</a>
+<dialog id="cart-modal" class="modal">
+  <div class="modal-box max-w-3xl">
+    <h3 class="font-bold text-2xl mb-6">Your Shopping Cart</h3>
+
+    <div id="cart-items" class="space-y-6 mb-8 max-h-[60vh] overflow-y-auto pr-2"></div>
+
+    <div class="flex justify-between items-center text-xl font-bold mb-6 border-t pt-4">
+      <span>Total:</span>
+      <span id="cart-total">$0.00</span>
     </div>
-    <div class="navbar-center hidden lg:flex">
-      <ul class="menu menu-horizontal px-1 gap-2">
-        <li><a href="index.html" class="text-base">Home</a></li>
-        <li><a href="products.html" class="text-base">Products</a></li>
-        <li><a href="#" class="text-base">About</a></li>
-        <li><a href="#" class="text-base">Contact</a></li>
-      </ul>
-    </div>
-    <div class="navbar-end">
-      <button class="btn btn-ghost btn-circle relative">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-        </svg>
-        <span id="cart-count" class="badge badge-sm badge-secondary absolute -top-1 -right-1">0</span>
-      </button>
+
+    <div class="modal-action flex justify-between w-full">
+      <button onclick="clearCart()" class="btn btn-error">Clear Cart</button>
+      <div>
+        <button class="btn btn-neutral mr-2" onclick="document.getElementById('cart-modal').close()">Close</button>
+        <button class="btn btn-primary">Proceed to Checkout</button>
+      </div>
     </div>
   </div>
+  <form method="dialog" class="modal-backdrop"><button>close</button></form>
+</dialog>
+
+<body class="min-h-screen bg-base-200 antialiased">
+
+<div class="navbar bg-base-100 shadow fixed top-0 z-50 px-4 lg:px-8">
+  <div class="navbar-start">
+    <div class="dropdown lg:hidden">
+      <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </div>
+      <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="products.html">Products</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <a href="index.html" class="text-2xl font-bold text-primary">SwiftCart</a>
+  </div>
+
+  <div class="navbar-center hidden lg:flex">
+    <ul class="menu menu-horizontal px-1 gap-2">
+      <li><a href="index.html" class="text-base">Home</a></li>
+      <li><a href="products.html" class="text-base">Products</a></li>
+      <li><a href="#" class="text-base">About</a></li>
+      <li><a href="#" class="text-base">Contact</a></li>
+    </ul>
+  </div>
+
+  <div class="navbar-end">
+    <button onclick="showCart()" class="btn btn-ghost btn-circle relative">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+      </svg>
+      <span id="cart-count" class="badge badge-sm badge-secondary absolute -top-1 -right-1">0</span>
+    </button>
+  </div>
+</div>
 
   <div class="h-20"></div>
 
@@ -87,133 +125,140 @@
   </dialog>
 
   <script src="script.js"></script>
-  <script>
-    let allProducts = [];
+<script src="script.js"></script>
+<script>
+  let allProducts = [];
 
-    async function loadCategories() {
-      const container = document.getElementById('category-buttons');
-      try {
-        const res = await fetch('https://fakestoreapi.com/products/categories');
-        const cats = await res.json();
-        cats.forEach(cat => {
-          const btn = document.createElement('button');
-          btn.className = 'btn btn-outline btn-primary category-btn';
-          btn.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
-          btn.dataset.category = cat;
-          container.appendChild(btn);
+  async function loadCategories() {
+    const container = document.getElementById('category-buttons');
+    try {
+      const res = await fetch('https://fakestoreapi.com/products/categories');
+      const cats = await res.json();
+      cats.forEach(cat => {
+        const btn = document.createElement('button');
+        btn.className = 'btn btn-outline btn-primary category-btn';
+        btn.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
+        btn.dataset.category = cat;
+        container.appendChild(btn);
+      });
+
+      document.querySelectorAll('.category-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const cat = btn.dataset.category;
+          loadProducts(cat === 'all' ? '' : `/category/${cat}`);
         });
+      });
 
-        document.querySelectorAll('.category-btn').forEach(btn => {
-          btn.addEventListener('click', () => {
-            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            const cat = btn.dataset.category;
-            loadProducts(cat === 'all' ? '' : `/category/${cat}`);
-          });
-        });
-
-        document.querySelector('[data-category="all"]').classList.add('active');
-        loadProducts('');
-      } catch (e) {
-        console.error('Categories failed', e);
-      }
+      document.querySelector('[data-category="all"]').classList.add('active');
+      loadProducts('');
+    } catch (e) {
+      console.error('Categories failed', e);
     }
+  }
 
-    async function loadProducts(endpoint = '') {
-      const grid = document.getElementById('products-grid');
-      const loading = document.getElementById('loading');
-      if (!grid || !loading) return;
+  async function loadProducts(endpoint = '') {
+    const grid = document.getElementById('products-grid');
+    const loading = document.getElementById('loading');
+    if (!grid || !loading) return;
 
-      grid.innerHTML = '';
-      loading.classList.remove('hidden');
+    grid.innerHTML = '';
+    loading.classList.remove('hidden');
 
-      try {
-        const url = `https://fakestoreapi.com/products${endpoint}`;
-        const res = await fetch(url);
-        const products = await res.json();
+    try {
+      const url = `https://fakestoreapi.com/products${endpoint}`;
+      const res = await fetch(url);
+      const products = await res.json();
 
-        if (endpoint === '') allProducts = products;
+      if (endpoint === '') allProducts = products;
 
-        products.forEach(p => grid.appendChild(createProductCard(p)));
-      } catch (e) {
-        grid.innerHTML = '<p class="col-span-full text-center py-10 text-error">Failed to load products</p>';
-      } finally {
-        loading.classList.add('hidden');
-      }
+      products.forEach(p => grid.appendChild(createProductCard(p)));
+    } catch (e) {
+      grid.innerHTML = '<p class="col-span-full text-center py-10 text-error">Failed to load products</p>';
+    } finally {
+      loading.classList.add('hidden');
     }
+  }
 
-    function createProductCard(product) {
-      const card = document.createElement('div');
-      card.className = 'card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow';
-      const title = product.title.length > 55 ? product.title.slice(0,52)+'...' : product.title;
-      const stars = Array(5).fill(0).map((_,i) => 
-        i < Math.round(product.rating.rate) ? 'text-warning' : 'text-base-content/30'
-      ).map(cls => `<span class="${cls}">★</span>`).join('');
+  function createProductCard(product) {
+    const card = document.createElement('div');
+    card.className = 'card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow';
+    const title = product.title.length > 55 ? product.title.slice(0,52)+'...' : product.title;
+    const stars = Array(5).fill(0).map((_,i) => 
+      i < Math.round(product.rating.rate) ? 'text-warning' : 'text-base-content/30'
+    ).map(cls => `<span class="${cls}">★</span>`).join('');
 
-      card.innerHTML = `
-        <figure class="px-6 pt-6">
-          <img src="${product.image}" alt="${product.title}" class="rounded-xl h-48 w-full object-contain bg-white p-4" />
-        </figure>
-        <div class="card-body p-5">
-          <h2 class="card-title text-lg line-clamp-2">${title}</h2>
-          <div class="flex justify-between items-center mt-2">
-            <div class="badge badge-outline badge-secondary">${product.category}</div>
-            <div class="text-xl font-bold text-primary">$${product.price.toFixed(2)}</div>
-          </div>
-          <div class="flex items-center gap-1 mt-2">
-            <div class="rating rating-sm">${stars}</div>
-            <span class="text-sm text-base-content/70">(${product.rating.rate})</span>
-          </div>
-          <div class="card-actions justify-between mt-4">
-            <button class="btn btn-sm btn-outline btn-info details-btn" data-id="${product.id}">Details</button>
-            <button class="btn btn-sm btn-primary add-to-cart-btn" data-id="${product.id}">Add to Cart</button>
-          </div>
+    card.innerHTML = `
+      <figure class="px-6 pt-6">
+        <img src="${product.image}" alt="${product.title}" class="rounded-xl h-48 w-full object-contain bg-white p-4" />
+      </figure>
+      <div class="card-body p-5">
+        <h2 class="card-title text-lg line-clamp-2">${title}</h2>
+        <div class="flex justify-between items-center mt-2">
+          <div class="badge badge-outline badge-secondary">${product.category}</div>
+          <div class="text-xl font-bold text-primary">$${product.price.toFixed(2)}</div>
         </div>
-      `;
-      return card;
+        <div class="flex items-center gap-1 mt-2">
+          <div class="rating rating-sm">${stars}</div>
+          <span class="text-sm text-base-content/70">(${product.rating.rate})</span>
+        </div>
+        <div class="card-actions justify-between mt-4">
+          <button class="btn btn-sm btn-outline btn-info details-btn" data-id="${product.id}">Details</button>
+          <button class="btn btn-sm btn-primary add-to-cart-btn" data-id="${product.id}">Add to Cart</button>
+        </div>
+      </div>
+    `;
+    return card;
+  }
+
+  async function showProductDetails(id) {
+    try {
+      const res = await fetch(`https://fakestoreapi.com/products/${id}`);
+      const p = await res.json();
+
+      document.getElementById('modal-image').src = p.image;
+      document.getElementById('modal-title').textContent = p.title;
+      document.getElementById('modal-category').textContent = p.category.toUpperCase();
+      document.getElementById('modal-description').textContent = p.description;
+      document.getElementById('modal-price').textContent = `$${p.price.toFixed(2)}`;
+
+      const starsContainer = document.getElementById('modal-rating-stars');
+      starsContainer.innerHTML = '';
+      for (let i = 1; i <= 5; i++) {
+        const star = document.createElement('input');
+        star.type = 'radio';
+        star.name = 'rating';
+        star.className = 'mask mask-star-2 bg-warning';
+        if (i <= Math.round(p.rating.rate)) star.checked = true;
+        starsContainer.appendChild(star);
+      }
+      document.getElementById('modal-rating-text').textContent = `(${p.rating.rate} / ${p.rating.count})`;
+
+      document.getElementById('product-modal').showModal();
+    } catch (e) {
+      alert('Failed to load product details');
+    }
+  }
+
+  document.addEventListener('click', e => {
+    const addBtn = e.target.closest('.add-to-cart-btn');
+    if (addBtn) {
+      const id = parseInt(addBtn.dataset.id);
+      window.addToCart(id);
     }
 
-    async function showProductDetails(id) {
-      try {
-        const res = await fetch(`https://fakestoreapi.com/products/${id}`);
-        const p = await res.json();
-
-        document.getElementById('modal-image').src = p.image;
-        document.getElementById('modal-title').textContent = p.title;
-        document.getElementById('modal-category').textContent = p.category.toUpperCase();
-        document.getElementById('modal-description').textContent = p.description;
-        document.getElementById('modal-price').textContent = `$${p.price.toFixed(2)}`;
-
-        const starsContainer = document.getElementById('modal-rating-stars');
-        starsContainer.innerHTML = '';
-        for (let i = 1; i <= 5; i++) {
-          const star = document.createElement('input');
-          star.type = 'radio';
-          star.name = 'rating';
-          star.className = 'mask mask-star-2 bg-warning';
-          if (i <= Math.round(p.rating.rate)) star.checked = true;
-          starsContainer.appendChild(star);
-        }
-        document.getElementById('modal-rating-text').textContent = `(${p.rating.rate} / ${p.rating.count})`;
-
-        document.getElementById('product-modal').showModal();
-      } catch (e) {
-        alert('Failed to load product details');
-      }
+    const detailsBtn = e.target.closest('.details-btn');
+    if (detailsBtn) {
+      const id = parseInt(detailsBtn.dataset.id);
+      showProductDetails(id);
     }
+  });
 
-    document.addEventListener('click', e => {
-      const btn = e.target.closest('.details-btn');
-      if (btn) {
-        const id = btn.dataset.id;
-        showProductDetails(id);
-      }
-    });
-
-    document.addEventListener('DOMContentLoaded', () => {
-      loadCategories();
-    });
-  </script>
+  document.addEventListener('DOMContentLoaded', () => {
+    loadCategories();
+  });
+</script>
 
 </body>
 </html>
