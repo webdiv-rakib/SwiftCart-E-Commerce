@@ -44,8 +44,8 @@
       <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
         <li><a href="index.html">Home</a></li>
         <li><a href="products.html">Products</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Contact</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
       </ul>
     </div>
     <a href="index.html" class="text-2xl font-bold text-primary">SwiftCart</a>
@@ -55,8 +55,8 @@
     <ul class="menu menu-horizontal px-1 gap-2">
       <li><a href="index.html" class="text-base">Home</a></li>
       <li><a href="products.html" class="text-base">Products</a></li>
-      <li><a href="#" class="text-base">About</a></li>
-      <li><a href="#" class="text-base">Contact</a></li>
+      <li><a href="about.html" class="text-base">About</a></li>
+      <li><a href="contact.html" class="text-base">Contact</a></li>
     </ul>
   </div>
 
@@ -114,7 +114,7 @@
                 <span id="modal-rating-text" class="text-xl"></span>
               </div>
             </div>
-            <button class="btn btn-primary btn-lg w-full gap-2" id="modal-add-cart">
+            <button onclick="window.addToCart(parseInt(document.querySelector('[data-id]').dataset.id))" class="btn btn-primary btn-lg w-full gap-2" id="modal-add-cart">
               Add to Cart
             </button>
           </div>

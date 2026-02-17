@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact Us - SwiftCart</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="min-h-screen bg-base-200 antialiased">
+
+  <!-- Navbar -->
+  <div class="navbar bg-base-100 shadow fixed top-0 z-50 px-4 lg:px-8">
+    <div class="navbar-start">
+      <div class="dropdown lg:hidden">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </div>
+        <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="products.html">Products</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <a href="index.html" class="text-2xl font-bold text-primary">SwiftCart</a>
+    </div>
+    <div class="navbar-center hidden lg:flex">
+      <ul class="menu menu-horizontal px-1 gap-2">
+        <li><a href="index.html" class="text-base">Home</a></li>
+        <li><a href="products.html" class="text-base">Products</a></li>
+        <li><a href="about.html" class="text-base">About</a></li>
+        <li><a href="contact.html" class="text-base">Contact</a></li>
+      </ul>
+    </div>
+    <div class="navbar-end">
+      <button onclick="showCart()" class="btn btn-ghost btn-circle relative">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+        </svg>
+        <span id="cart-count" class="badge badge-sm badge-secondary absolute -top-1 -right-1">0</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="h-20"></div>
+
+  <!-- Contact Content -->
+  <section class="py-16 px-4 md:px-8">
+    <div class="max-w-4xl mx-auto">
+      <h1 class="text-5xl font-bold text-center mb-12 text-primary">Contact Us</h1>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <!-- Left -->
+        <div>
+          <h2 class="text-3xl font-bold mb-6">Get in Touch</h2>
+          <p class="text-lg mb-6">
+            Have questions about our products, orders, or just want to say hi? We'd love to hear from you!
+          </p>
+
+          <div class="space-y-6">
+            <div>
+              <h3 class="text-xl font-semibold mb-2">Email</h3>
+              <p class="text-lg">support@swiftcart.com</p>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold mb-2">Phone</h3>
+              <p class="text-lg">+880 1234 567 890</p>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold mb-2">Address</h3>
+              <p class="text-lg">Dhaka, Bangladesh</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right -->
+        <div class="card bg-base-100 shadow-xl p-8">
+          <h2 class="text-3xl font-bold mb-6">Send us a message</h2>
+
+          <form class="space-y-6">
+            <div>
+              <label class="label">
+                <span class="label-text">Your Name</span>
+              </label>
+              <input type="text" placeholder="John Doe" class="input input-bordered w-full" />
+            </div>
+
+            <div>
+              <label class="label">
+                <span class="label-text">Email Address</span>
+              </label>
+              <input type="email" placeholder="your@email.com" class="input input-bordered w-full" />
+            </div>
+
+            <div>
+              <label class="label">
+                <span class="label-text">Message</span>
+              </label>
+              <textarea placeholder="How can we help you?" class="textarea textarea-bordered w-full h-32"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-full">Send Message</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="text-center mt-12">
+        <a href="products.html" class="btn btn-primary btn-lg">Back to Shopping</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer footer-center p-10 bg-base-200 text-base-content">
+    <aside>
+      <p>Copyright © 2026 - SwiftCart</p>
+    </aside>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

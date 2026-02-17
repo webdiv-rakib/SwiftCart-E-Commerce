@@ -1,6 +1,6 @@
 # SwiftCart - Simple E-Commerce Website
 
-A responsive single-page style e-commerce site built with HTML, Tailwind CSS + DaisyUI, and vanilla JavaScript.
+A responsive single-page style e-commerce site built with HTML, Tailwind CSS + DaisyUI, and  JavaScript.
 
 Uses the Fake Store API to load real product data.
 
@@ -17,9 +17,9 @@ Uses the Fake Store API to load real product data.
 
 ## Tech Used
 - HTML5
-- Tailwind CSS v4 (via CDN)
-- DaisyUI v5 (via CDN)
-- Vanilla JavaScript (no frameworks)
+- Tailwind CSS v4 (CDN)
+- DaisyUI v5 (CDN)
+- Vanilla JavaScript
 - Fake Store API[](https://fakestoreapi.com)
 
 ## How to Run

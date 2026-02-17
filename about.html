@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About Us - SwiftCart</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="min-h-screen bg-base-200 antialiased">
+
+  <div class="navbar bg-base-100 shadow fixed top-0 z-50 px-4 lg:px-8">
+    <div class="navbar-start">
+      <div class="dropdown lg:hidden">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </div>
+        <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="products.html">Products</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <a href="index.html" class="text-2xl font-bold text-primary">SwiftCart</a>
+    </div>
+    <div class="navbar-center hidden lg:flex">
+      <ul class="menu menu-horizontal px-1 gap-2">
+        <li><a href="index.html" class="text-base">Home</a></li>
+        <li><a href="products.html" class="text-base">Products</a></li>
+        <li><a href="about.html" class="text-base">About</a></li>
+        <li><a href="contact.html" class="text-base">Contact</a></li>
+      </ul>
+    </div>
+    <div class="navbar-end">
+      <button onclick="showCart()" class="btn btn-ghost btn-circle relative">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+        </svg>
+        <span id="cart-count" class="badge badge-sm badge-secondary absolute -top-1 -right-1">0</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="h-20"></div>
+
+  <!-- About Content -->
+  <section class="py-16 px-4 md:px-8">
+    <div class="max-w-5xl mx-auto">
+      <h1 class="text-5xl font-bold text-center mb-12 text-primary">About SwiftCart</h1>
+
+      <div class="prose lg:prose-xl mx-auto text-base-content">
+        <p>
+          SwiftCart is a modern, fast, and user-friendly online shopping platform created as a learning project.
+          We aim to provide the best experience for both customers and developers exploring e-commerce web development.
+        </p>
+
+        <h2 class="text-3xl font-bold mt-10 mb-6">Our Mission</h2>
+        <p>
+          To build clean, responsive, and real-data-driven e-commerce sites using only HTML, CSS (Tailwind + DaisyUI), and vanilla JavaScript.
+        </p>
+
+        <h2 class="text-3xl font-bold mt-10 mb-6">What We Offer</h2>
+        <ul class="list-disc pl-6 space-y-3">
+          <li>Real-time product data from Fake Store API</li>
+          <li>Category filtering & search-like browsing</li>
+          <li>Cart system with localStorage persistence</li>
+          <li>Fully mobile-responsive design</li>
+          <li>Beautiful UI powered by DaisyUI themes</li>
+        </ul>
+
+        <h2 class="text-3xl font-bold mt-10 mb-6">Fun Fact</h2>
+        <p>
+          This entire site was built step-by-step with real API calls.
+        </p>
+      </div>
+
+      <div class="text-center mt-12">
+        <a href="products.html" class="btn btn-primary btn-lg">Start Shopping Now</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer footer-center p-10 bg-base-200 text-base-content">
+    <aside>
+      <p>Copyright © 2026 - SwiftCart</p>
+    </aside>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
