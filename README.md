@@ -1,55 +1,53 @@
-# SwiftCart - Simple E-Commerce Website
+# SwiftCart
 
-A responsive single-page style e-commerce site built with HTML, Tailwind CSS + DaisyUI, and  JavaScript.
+Simple responsive e-commerce site built for an assignment.
 
-Uses the Fake Store API to load real product data.
+Uses Fake Store API for real product data.
 
-## Features
-- Responsive navbar with hamburger menu on mobile
-- Hero banner with shop now button
-- Why choose us section with icons
-- Trending / top-rated products on home page
-- Full products page with category filters
-- Product cards with image, title, price, category badge, rating stars
-- Details modal for each product
-- Add to cart with quantity support + localStorage persistence
-- Cart modal showing items, quantity controls, remove, total price, clear cart
+### Pages
+- Home (index.html): hero banner, features, top-rated products, newsletter
+- Products (products.html): category filters, full product grid, details modal
+- About (about.html)
+- Contact (contact.html)
 
-## Tech Used
-- HTML5
+### Features
+- Responsive navbar with mobile hamburger menu
+- Product cards: image, title (truncated), price, category badge, star rating
+- Details modal with full info + add to cart
+- Cart system: add items, quantity, remove, total price, localStorage
+- Cart count badge in navbar
+- Cart preview modal (click cart icon)
+
+### Tech
+- HTML
 - Tailwind CSS v4 (CDN)
 - DaisyUI v5 (CDN)
 - Vanilla JavaScript
-- Fake Store API[](https://fakestoreapi.com)
+- Fake Store API
 
-## How to Run
+### How to run
 1. Clone the repo
-2. Open `index.html` in a browser (or use Live Server)
-3. Navigate between Home (`index.html`) and Products (`products.html`)
+2. Open index.html in browser (or use Live Server)
 
-## Screenshots
+### Assignment questions
 
+1. null vs undefined  
+   null = you set the value to nothing on purpose.  
+   undefined = variable exists but has no value yet (not assigned).
 
-## Assignment Questions
+2. map() vs forEach()  
+   map() returns a new array with changed values.  
+   forEach() just runs code on each item, doesn't return anything.
 
-1. **Difference between null and undefined**  
-   `undefined` means a variable has been declared but not assigned any value.  
-   `null` means the value is intentionally set to "nothing" or "no value".
+3. == vs ===  
+   == checks value after type conversion ("5" == 5 is true).  
+   === checks value and type strictly ("5" === 5 is false).
 
-2. **Use of map() and difference from forEach()**  
-   `map()` creates a new array by transforming each element (returns something).  
-   `forEach()` just runs a function on each element but returns nothing (undefined).  
-   Use `map()` when you want a transformed copy, `forEach()` when you just want side effects.
+4. async/await for API calls  
+   Lets you write promise code like normal synchronous code.  
+   Makes it easier to read, handle errors with try/catch, and wait for data.
 
-3. **Difference between == and ===**  
-   `==` compares values after type coercion (loose equality).  
-   `===` compares both value and type (strict equality) — no coercion.
-
-4. **Significance of async/await in fetching API data**  
-   `async/await` makes promise-based code look synchronous and easier to read.  
-   Instead of chaining `.then()`, you can write clean try/catch blocks and wait for data naturally.
-
-5. **Scope in JavaScript (Global, Function, Block)**  
-   - **Global scope**: Variables declared outside any function — accessible everywhere.  
-   - **Function scope**: Variables declared with `var` inside a function — only accessible inside that function.  
-   - **Block scope**: Variables declared with `let` or `const` inside `{}` (if, for, etc.) — only accessible inside that block.
+5. Scope in JS  
+   - Global: outside everything, accessible anywhere  
+   - Function: inside a function (var), only there  
+   - Block: inside {} with let/const, only in that block
